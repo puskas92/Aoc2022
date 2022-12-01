@@ -21,4 +21,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Day01\Day01_input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
