@@ -13,6 +13,7 @@ Day05.Day05_Main();
 Day06.Day06_Main();
 Day07.Day07_Main();
 Day08.Day08_Main();
+Day09.Day09_Main();
 
 sw.Stop();
 Console.WriteLine($"Code run under {sw.ElapsedMilliseconds}ms");
