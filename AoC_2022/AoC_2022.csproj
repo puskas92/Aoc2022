@@ -26,4 +26,8 @@
 		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Day10\Day10_input.txt" />
+  </ItemGroup>
 </Project>
