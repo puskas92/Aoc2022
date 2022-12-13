@@ -18,15 +18,15 @@ namespace AoC_2022
         public class Day13_ListOrValue
         {
             public bool isInteger;
-            public List<Day13_ListOrValue> ?List;
-            public int ?Value;
+            public List<Day13_ListOrValue> List;
+            public int Value;
 
             public Day13_ListOrValue(string s)
             {
                 if (s.StartsWith('['))
                 {
                     isInteger = false;
-                    this.Value = null;
+                    this.Value = int.MinValue;
                     this.List = new List<Day13_ListOrValue>();
 
                     var substring = "";
@@ -62,13 +62,13 @@ namespace AoC_2022
                 {
                     isInteger = true;
                     this.Value = int.Parse(s);
-                    List = null;
+                    List = new List<Day13_ListOrValue>();
                 }
             }
 
             public static bool operator <(Day13_ListOrValue a, Day13_ListOrValue b)
             {
-                return (a!=b) ? b>a : false;
+                return (a!=b) && b >a;
             }
             public static bool operator >(Day13_ListOrValue a, Day13_ListOrValue b)
             {
@@ -93,7 +93,6 @@ namespace AoC_2022
                         }
                     return false;
                 }
-                return false;
             }
 
 
@@ -102,11 +101,11 @@ namespace AoC_2022
             {
                 if (this.isInteger)
                 {
-                    return (Value is null) ? "" : Value.ToString();
+                    return Value.ToString();
                 }
                 else
                 {
-                    return (List is null) ? "[]" : "[" + string.Join(",", List.Select(f=> f.ToString())) +"]";
+                    return "[" + string.Join(",", List.Select(f=> f.ToString())) +"]";
                 }
             }
 
@@ -116,6 +115,11 @@ namespace AoC_2022
                 if (obj == null) return false;
                 if(obj.GetType() != this.GetType()) return false;
                 return this.ToString() == obj.ToString();
+            }
+
+            public override int GetHashCode()
+            {
+                return this.ToString().GetHashCode();
             }
 
         }
@@ -160,8 +164,8 @@ namespace AoC_2022
 
         public static int Day13_Part2(Day13_Input input)
         {
-            Day13_ListOrValue? additionitem1 = new Day13_ListOrValue("[[2]]");
-            Day13_ListOrValue? additionitem2 = new Day13_ListOrValue("[[6]]");
+            Day13_ListOrValue? additionitem1 = new("[[2]]");
+            Day13_ListOrValue? additionitem2 = new("[[6]]");
             var totalList = new List<Day13_ListOrValue>();
             foreach(var pair in input)
             {
