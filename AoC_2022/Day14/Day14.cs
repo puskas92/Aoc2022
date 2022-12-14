@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 using Xunit;
-
+ 
 namespace AoC_2022
 {
     public static class Day14
@@ -19,6 +19,7 @@ namespace AoC_2022
         {
             var input = Day14_ReadInput();
             Console.WriteLine($"Day14 Part1: {Day14_Part1(input)}");
+            input = Day14_ReadInput();
             Console.WriteLine($"Day14 Part2: {Day14_Part2(input)}");
         }
 
@@ -46,14 +47,14 @@ namespace AoC_2022
                         //for (var k = points[i].Y; k != points[i + 1].Y; k += Math.Sign(points[i + 1].Y - points[i].Y))
                         foreach(int k in Enumerable.Range(Math.Min(points[i].Y, points[i+1].Y), Math.Abs(points[i+1].Y -points[i].Y)+1))
                         {
-                            if (!result.ContainsKey(j)) result.Add(j, new Dictionary<int, char>());
-                            if (!result[j].ContainsKey(k)) result[j].Add(k, '#');
-                            result[j][k] = '#';
+                            if (!result.ContainsKey(k)) result.Add(k, new Dictionary<int, char>());
+                            if (!result[k].ContainsKey(j)) result[k].Add(j, '#');
+                            result[k][j] = '#';
                         }
                     }
                 }
             }
-            Day14_VisualazeMap(result);
+            //Day14_VisualazeMap(result);
             return result;
         }
 
@@ -64,11 +65,11 @@ namespace AoC_2022
             var minj = input.Min(f => f.Value.Keys.Min());
             var maxj = input.Max(f => f.Value.Keys.Max());
 
-            for(var j = minj; j<= maxj; j++)
+            for (var i = mini; i <= maxi; i++)
             {
                 var s = "";
-         
-                for (var i = mini; i<= maxi; i++)
+
+                for (var j = minj; j <= maxj; j++)
                 {
                     if (!input.ContainsKey(i)) s += '.';
                     else if (!input[i].ContainsKey(j)) s += '.';
@@ -81,18 +82,81 @@ namespace AoC_2022
 
         public static int Day14_Part1(Day14_Input input)
         {
-            var startPoint = new Point(500, 0);
             var goesToInfinite = false;
-          
+            var maxrow = input.Keys.Max();
+            var SandParticleCount = 0;
             while (!goesToInfinite)
             {
-                Point sandParticle = new Point(startPoint.X, startPoint.Y);
+                 var sandParticleY = 500;
+                 SandParticleCount++;
+
+                for (var row = 0; row<= maxrow +1; row++)
+                {
+                    if(row == maxrow + 1)
+                    {
+                        goesToInfinite = true;
+                        break;
+                    }
+
+                    if (!input.ContainsKey(row) || !input[row].ContainsKey(sandParticleY) || input[row][sandParticleY] == '.') continue;
+                    else if (!input[row].ContainsKey(sandParticleY - 1) || input[row][sandParticleY - 1] == '.') { sandParticleY -= 1; continue; }
+                    else if (!input[row].ContainsKey(sandParticleY + 1) || input[row][sandParticleY + 1] == '.') { sandParticleY += 1; continue; }
+                    else
+                    {
+                        if (!input.ContainsKey(row - 1)) input.Add(row - 1, new Dictionary<int, char>());
+                        if (!input[row - 1].ContainsKey(sandParticleY)) input[row - 1].Add(sandParticleY, 'O');
+                        input[row-1][sandParticleY] = 'O';
+                        break;
+                    }
+                }
+                //Day14_VisualazeMap(input);
+
             }
+
+            return SandParticleCount - 1;
         }
 
         public static int Day14_Part2(Day14_Input input)
         {
-            return 0;
+            if (!input.ContainsKey(0)) input.Add(0, new Dictionary<int, char>());
+            if (!input[0].ContainsKey(500)) input[0].Add(500, '.');
+            input[0][500] = '.';
+
+            var maxrow = input.Keys.Max();
+
+            var SandParticleCount = 0;
+            while (true)
+            {
+                var sandParticleY = 500;
+                SandParticleCount++;
+
+                if (input[0][500] != '.') break;
+
+                for (var row = 0; row <= maxrow + 2; row++)
+                {
+                    if (row == maxrow + 2)
+                    {
+                        if (!input.ContainsKey(row - 1)) input.Add(row - 1, new Dictionary<int, char>());
+                        if (!input[row - 1].ContainsKey(sandParticleY)) input[row - 1].Add(sandParticleY, 'O');
+                        input[row - 1][sandParticleY] = 'O';
+                        break;
+                    }
+                    else if (!input.ContainsKey(row) || !input[row].ContainsKey(sandParticleY) || input[row][sandParticleY] == '.') continue;
+                    else if (!input[row].ContainsKey(sandParticleY - 1) || input[row][sandParticleY - 1] == '.') { sandParticleY -= 1; continue; }
+                    else if (!input[row].ContainsKey(sandParticleY + 1) || input[row][sandParticleY + 1] == '.') { sandParticleY += 1; continue; }
+                    else
+                    {
+                        if (!input.ContainsKey(row - 1)) input.Add(row - 1, new Dictionary<int, char>());
+                        if (!input[row - 1].ContainsKey(sandParticleY)) input[row - 1].Add(sandParticleY, 'O');
+                        input[row - 1][sandParticleY] = 'O';
+                        break;
+                    }
+                }
+                
+
+            }
+           // Day14_VisualazeMap(input);
+            return SandParticleCount - 1;
         }
 
 
@@ -107,7 +171,7 @@ namespace AoC_2022
         }
 
         [Theory]
-        [InlineData("ABC", 0)]
+        [InlineData("498,4 -> 498,6 -> 496,6\r\n503,4 -> 502,4 -> 502,9 -> 494,9", 93)]
         public static void Day14Part2Test(string rawinput, int expectedValue)
         {
             Assert.Equal(expectedValue, Day14.Day14_Part2(Day14.Day14_ReadInput(rawinput)));
