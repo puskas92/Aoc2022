@@ -182,8 +182,11 @@ namespace AoC_2022
             //}
 
             var SortedListOfPressure = ListOfElephant.OrderByDescending(f => f.Value).ToArray();
+            var maxPressureOfHalf = SortedListOfPressure.First().Value;
             foreach (var pressure in SortedListOfPressure)
             {
+                if (pressure.Value + maxPressureOfHalf < maxPressure) break;
+
                 foreach(var pressure2 in SortedListOfPressure)
                 {
                     var isCorrect = true;
