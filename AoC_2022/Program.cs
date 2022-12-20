@@ -24,6 +24,7 @@ sw.Start();
 //Day17.Day17_Main();
 //Day18.Day18_Main();
 Day19.Day19_Main();
+//Day20.Day20_Main();
 sw.Stop();
 Console.WriteLine($"Code run under {sw.ElapsedMilliseconds}ms");
 Console.ReadLine();
