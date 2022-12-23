@@ -16,7 +16,6 @@ namespace AoC_2022
     {
         public class Day23_Input
         {
-            //public Dictionary<int, Dictionary<int, bool>> Map;
             public Dictionary<int, HashSet<int>> Elfes;
 
             public int timeStep;
@@ -26,57 +25,7 @@ namespace AoC_2022
                 Elfes = new Dictionary<int, HashSet<int>>();
                 timeStep = 0;
             }
-            //public Day23_Input()
-            //{
-            //    Map = new Dictionary<int, Dictionary<int, bool>>();
-            //    timeStep = 0;
-            //}
 
-            //public void Reduce()
-            //{
-            //    while (true)
-            //    {
-            //        if (!Map[Map.Keys.Min()].Any(f => f.Value)) Map.Remove(Map.Keys.Min());
-            //        else break;
-            //    }
-
-            //    while (true)
-            //    {
-            //        if (!Map[Map.Keys.Max()].Any(f => f.Value)) Map.Remove(Map.Keys.Max());
-            //        else break;
-            //    }
-
-            //    while (true)
-            //    {
-            //        if (!Map.Any(f => f.Value[f.Value.Keys.Min()]))
-            //        {
-            //            foreach (var row in Map)
-            //            {
-            //                row.Value.Remove(row.Value.Keys.Min());
-            //            }
-            //        }
-            //        else break;
-            //    }
-
-
-            //    while (true)
-            //    {
-            //        if (!Map.Any(f => f.Value[f.Value.Keys.Max()]))
-            //        {
-            //            foreach (var row in Map)
-            //            {
-            //                row.Value.Remove(row.Value.Keys.Max());
-            //            }
-            //        }
-            //        else break;
-            //    }
-            //}
-
-            //public int Score()
-            //{
-            //    Reduce();
-            //    return Map.Sum(f => f.Value.Count(g => !g.Value));
-            //}
             public int Score()
             {
                 var MinRow = Elfes.Keys.Min();
@@ -86,35 +35,6 @@ namespace AoC_2022
 
                 return ((MaxRow-MinRow+1)*(MaxColumn-MinColumn+1))-Elfes.Sum(f=> f.Value.Count());
             }
-
-            //public bool DoATimeStep()
-            //{
-            //    var IsChanged = false;
-            //    timeStep += 1;
-
-            //    var NewState = new Dictionary<int, Dictionary<int, List<(int, int)>>>();
-            //    var mincolumn = Map[Map.Keys.Min()].Keys.Min();
-            //    var maxcolumn = Map[Map.Keys.Min()].Keys.Max();
-
-            //    //create new state object
-            //    for (var i = Map.Keys.Min()-1; i <= Map.Keys.Max() +1; i++)
-            //    {
-            //        NewState.Add(i, new Dictionary<int, List<(int, int)>>());
-            //        for(var j = mincolumn - 1; j<= maxcolumn +1; i++)
-            //        {
-            //            //if (Map.ContainsKey(i) && Map[i].ContainsKey(j))
-            //            NewState[i].Add(j, new List<(int, int)>());
-            //        }
-            //    }
-
-            //    //Do the proposal
-
-
-            //    //Update the map based on the proposals
-
-            //    return IsChanged;
-            //}
-
 
             public bool DoATimeStep()
             {
@@ -151,27 +71,9 @@ namespace AoC_2022
                             }
                         }
                         if (ToContinue) continue;
-                        //if (!TestPosition(row.Key-1, column-1) && !TestPosition(row.Key - 1, column) && !TestPosition(row.Key - 1, column  + 1))
-                        //{
-                        //    SetToProposal(Proposal, row.Key - 1, column, row.Key, column);
-                        //}
-                        //else if (!TestPosition(row.Key + 1, column - 1) && !TestPosition(row.Key + 1, column) && !TestPosition(row.Key + 1, column + 1))
-                        //{
-                        //    SetToProposal(Proposal, row.Key + 1, column, row.Key, column);
-                        //}
-                        //else if (!TestPosition(row.Key-1, column - 1) && !TestPosition(row.Key , column-1) && !TestPosition(row.Key + 1, column - 1))
-                        //{
-                        //    SetToProposal(Proposal, row.Key, column -1, row.Key, column);
-                        //}
-                        //else if (!TestPosition(row.Key - 1, column + 1) && !TestPosition(row.Key, column + 1) && !TestPosition(row.Key + 1, column + 1))
-                        //{
-                        //    SetToProposal(Proposal, row.Key, column+1, row.Key, column);
-                        //}
-                        //else
-                        //{
+
                         SetToProposal(Proposal, row.Key, column, row.Key, column);
-                            CountOfProposalToStay += 1;
-                        //}
+                        CountOfProposalToStay += 1;
                     }
                 }
 
